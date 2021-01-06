@@ -3,7 +3,6 @@ const getPort = require('get-port');
 const open = require('open');
 const app = express();
 const path = require('path');
-// const router = express.Router();
 const http = require("http");
 const server = http.createServer(app);
 const io = require("socket.io")(server);
@@ -22,11 +21,6 @@ const setupCommandAndControl = async() => {
         res.sendFile(path.join(__dirname, '/c-and-c/command.html'));
     });
 
-    // app.get('/new-victim', function(req, res) {
-    //     console.log(`New Victim connected, Host: ${req.query.host} `);
-    //     zombies.push(req.query.host);
-    //     io.emit('new-victim', req.query.host);
-    // });
     app.use(express.json());
     app.post('/new-victim', function(req, res) {
         const hostname = req.body.host;
@@ -48,6 +42,7 @@ const setupCommandAndControl = async() => {
 
 const setupLogin = async() => {
     app.use("/login.js", express.static(path.join(__dirname, "/victim/login.js")));
+    app.use("/login.js", express.static(path.join(__dirname, "/victim/login.js")));
     const port = await getPort({ port: 3002 });
     const host = `http://127.0.0.1:${port}`;
     if (port != 3002) {
@@ -59,9 +54,21 @@ const setupLogin = async() => {
         res.sendFile(path.join(__dirname, "/victim/login.html"));
     });
 
-    // app.post('/login-attempt', function(req, res) {
-    //     if(req.payload)
-    // })
+    app.get('/admin.html', function(req, res) {
+        res.sendFile(path.join(__dirname, "/victim/admin.html"));
+    });
+
+
+    app.post('/login-attempt', function(req, res) {
+        console.log(`Attempt received, ${JSON.stringify(req.body)}`);
+        const username = req.body.username;
+        const password = req.body.password;
+        if (username === "admin" && password == "password") {
+            res.redirect("/admin.html");
+        } else {
+            res.sendStatus(401);
+        }
+    })
 
     app.listen(port, async() => {
         await open(`${host}/login`);
@@ -77,14 +84,10 @@ const setupLogin = async() => {
         res.sendFile(path.join(__dirname + '/index.html'));
     });
 
-    // app.use('/', router); //TODO fix this ?
     app.listen(port, async() => {
         await open(`${host}/`);
         setupCommandAndControl();
         setupLogin();
     });
-
     console.log(`Running on port ${port}`);
-
-
 })();

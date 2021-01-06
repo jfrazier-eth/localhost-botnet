@@ -4,13 +4,14 @@
 <head>
     <title>Victim Site</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
-    <script src="login.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
     <h1 class="text-success text-center">Welcome to the login page</h1>
     <p class="text-center">This is the site the botnet should execute its attacks on.</p>
-    <form class="w-25 m-auto">
+    <form class="w-25 m-auto" id="form">
+        <p class="text-danger text-center d-none" id="error">Error, incorrect username or password</p>
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="username" class="form-control" id="username" />
@@ -19,8 +20,10 @@
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password">
         </div>
-        <button type="submit" class="btn btn-primary" onclick="attemptLogin()">Submit</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
     </form>
+
 </body>
+<script src="login.js"></script>
 
 </html>
