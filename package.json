@@ -1,0 +1,25 @@
+{
+  "name": "433-final-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frazierjoe/433-final-project.git"
+  },
+  "author": "Joe Frazier",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frazierjoe/433-final-project/issues"
+  },
+  "homepage": "https://github.com/frazierjoe/433-final-project#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "get-port": "^5.1.1",
+    "open": "^7.3.0",
+    "socket.io": "^3.0.5"
+  }
+}

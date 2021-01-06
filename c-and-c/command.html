@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Command and Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/command.js"></script>
+</head>
+
+<body>
+    <h1 class="text-success text-center">Welcome to the command and control site.</h1>
+    <p class="text-center">From here you can run attacks your infected machines and view your infected devices.</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <h2>Attacks</h2>
+                <input type="text" id="to-attack" placeholder="localhost:3002">
+                </input> <br/>
+                <button onclick="runAto()">Run ATO on victim site
+                </button>
+            </div>
+            <div class=col-md>
+                <h2>Infected Machines</h2>
+                <ol id="zombies"></ol>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
