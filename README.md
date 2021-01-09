@@ -1,34 +1,43 @@
 # 433-final-project Botnet Simulation
+For my final project I created a botnet and a website that the botnet can be used to perform a credential stuffing attack on. A botnet is composed of some infected software that be used to spread the botnet and a command and control server that infected devices connect to and wait for commands.
 
 ## Running the program
-* Clone the repo
-* run `npm i`
-* run `npm start` to automatically launch the download site, victim site, and command and control site (all will be opened in new tabs in your default browser).
-* Click the download link for your system to download your software including the command and control software of the botnet.
-* Set the permissions of the executable file for it to be executable `chmod 755 <filename>`
-* Run the executable you downloaded. A server will start and open your software(a simple webiste) in your browser. Along with the simple website comes the command and control software for the botnet. Your computer will use the same server that the website is running on to listen for commands from the botnet controller. Note, I have only tested the executable on a mac. If changing the permissions doesn't work for you, try running the exectuable in `433-final-project/malware/build`
-* To create a larger botnet, run the executable file multiple times to spawn more infected machines(processes)
-* Go to the command and control site (you will notice your infected machines are listed)
-* To start the attack, you can click the `Run` button to run with default settings and wordlists or provide your own.
-* Victim site username: admin password: password (make sure these are in your word lists to perform a successful attack)
-* Once you click the run button, the attack information being used by each bot will be displayed on that bot's website
-* On a successful login, the infected machine will send the username and password back to the command and control site 
+### Prereqs
+* I do not recommend trying to run this on a seed labs machine (I attempted and gave up shortly after.) 
+* I have not tested the windows executable.
+* I have performed testing on a Mac with NodeJS version 15.5.0 and npm version 7.3.0 and Kali with NodeJS version 12.19.0 and npm version 7.3.0.
+* To install nodejs and npm on linux machines run `sudo apt install nodejs npm`
+* Port 3001 and 3002 must be available for run the program successfully.
+
+### Starting the Program
+* Clone the repo `git clone https://github.com/frazierjoe/localhost-botnet.git`
+* Once insde the repo, run `npm i` 
+* Run `npm start` to automatically launch the download site, victim site, and command and control site (all will be opened in new tabs in your default browser).
+* You should now have three new tabs open in your default browser. One is the victim site, one is the command and control site and the last is the software download site. 
+* Go the the software download site and click on the link corresponding to your OS. I have tested the Mac version and Linux version (with Kali).
+* Set the permissions on the downloaded file to be executable `chmod 755 malware-linux`
+
+* It's then easiest to run the executable by double clicking it in the file manager. Alternatively you can run it with **./malware-<OS>** but will have to open multiple tabs/windows to create multiple infected devices.
+* Once run, you should see another web page open in a new tab. This is the infected software web page. 
+* You are now free to explore and find the flag on the admin page. The attack is ready to be run, just click the run button from the command and control web page.
+
+## Components
+
+### Infected Software
+To model infected software, I created a download site where a user can view download links to the software they would like to download. The download page is opened when the program is run (via `npm run start` not the executable of the infected software.) 
+//TODO download-site pic
+Once the program has been downloaded, the user can run the program. When the program is run, it will start a server and open a web page in the system's default browser. This web page replicates the software that a user would have intended to download. The server that is started by running the program will automatically sends the IP address and port number of the server to the command and control server. It then waits for commands from the command and control server. When a command is received, the botnet begins its credential stuffing attack with the data the command and control server sent it. It will display this data on the web page it is serving. In the credential stuffing attack, the infected device receives a list of usernames and passwords, the IP address and port of the victim server, a delay setting and an endpoint to send requests to. The infected device then attempts to login to the victim via the endpoint and if it finds a valid username/password pair, it will send it back to the command and control server.
+//TODO software site pic
 
 
-
-<!-- ### Download Site
-* Includes links to download executables for different systems including x86 macos, x86 windows and x86 linux machines. ** SET EXECUTABLE PERMISSION ON DOWNLOADED FILES USING CHMOD(or similar) TO RUN THEM  **
-
-### Malicious Software
-* Starts a localhost server
-* Opens an innocent website(replicating a user downloading infected software)
-* Listens for commands from the attacker
-* Prints commands that have been run by the attacker //TODO
-
-### Command and Control Site
-
-
+### Command and Control
+Command and control is the access point to the botnet for the owner. It tracks the infected devices, issues commands to the infected devices and receives data from the connected devices about their attacks. In this implementation, the owner can interact with their botnet via a web page that is opened at the same time as the downloads web page. The botnet owner can view a list of their infected devices, use a form to create and run a credential stuffing attack and view the results of the attack (valid usernames and passwords.) When a credential stuffing attack is initiated, the command and control server splits up the list of usernames and distributes it to the infected devices along with the full list of passwords and other attack information. 
+//TODO command and control pic
 
 ### Victim Site
-* Displays requests that have been made to this site -->
+The victim site is a simple login site that runs on 127.0.0.1:3002. This web page is opened at the same time as the command and control web page and download page. A valid login to the victim site is username: "admin" password: "password" (without the quotes.) On a valid login, the user is redirected to the admin page where a flag is displayed.
+//TODO login.png
 
+### Localhost Botnet Goal
+The goal of the attacker is to infect devices, craft a request to send to the victim site via the form on the command and control site, run the distributed attack on the infected devices, and receive valid credentials from the infected devices. The attacker can then login to the site with the credentials they found.
+//TODO admin.png
