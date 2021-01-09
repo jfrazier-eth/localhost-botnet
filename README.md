@@ -1,5 +1,4 @@
-# 433-final-project Botnet Simulation
-For my final project I created a botnet and a website that the botnet can be used to perform a credential stuffing attack on. A botnet is composed of some infected software that be used to spread the botnet and a command and control server that infected devices connect to and wait for commands.
+# Localhost Botnet
 
 ## Running the program
 ### Prereqs
