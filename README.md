@@ -1,4 +1,4 @@
-# Localhost Botnet
+# Localhost Botnet   ![](https://img.shields.io/badge/Node.JS-informational?style=flat&logo=Node.js&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/Socket.io-informational?style=flat&logo=Socket.io&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/Express-informational?style=flat&logo=Express&logoColor=white&color=2bbc8a)
 
 ## Running the program
 ### Prereqs
