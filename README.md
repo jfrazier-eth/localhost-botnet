@@ -1,5 +1,8 @@
 # Localhost Botnet   ![](https://img.shields.io/badge/Node.JS-informational?style=flat&logo=Node.js&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/Socket.io-informational?style=flat&logo=Socket.io&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/Express-informational?style=flat&logo=Express&logoColor=white&color=2bbc8a)
 
+## Goal
+This was created as a final project for WUSTL CSE-433 (Introduction to Computer Security) as a way to help understand how the basic components of a botnet work together to infect devices, control these devices and issue attacks.
+
 ## Running the program
 ### Prereqs
 * I do not recommend trying to run this on a seed labs machine (I attempted and gave up shortly after.) 
