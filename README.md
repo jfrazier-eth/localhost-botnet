@@ -3,6 +3,15 @@
 ## Goal
 This was created as a final project for WUSTL CSE-433 (Introduction to Computer Security) as a way to help understand how the basic components of a botnet work together to infect devices, control these devices and issue attacks.
 
+## Scripts
+* `npm run start` everything you need to run the program
+* `npm run start-server` skips building the exectuables, saves time but you must pack the malware to view changes to it
+* `npm run pack-malware` packs malware into exectuables located in `/build`
+
+#### Development Tip 
+* Pack the executables and run them by double clicking your system's executable. This way your executable should already have the correct permissions set.
+* See below for a more detailed setup
+
 ## Running the program
 ### Prereqs
 * I do not recommend trying to run this on a seed labs machine (I attempted and gave up shortly after.) 
@@ -17,7 +26,7 @@ This was created as a final project for WUSTL CSE-433 (Introduction to Computer 
 * Run `npm start` to automatically launch the download site, victim site, and command and control site (all will be opened in new tabs in your default browser).
 * You should now have three new tabs open in your default browser. One is the victim site, one is the command and control site and the last is the software download site. 
 * Go the the software download site and click on the link corresponding to your OS. I have tested the Mac version and Linux version (with Kali).
-* Set the permissions on the downloaded file to be executable `chmod 755 malware-linux`
+* Set the permissions on the downloaded file to be executable `chmod 755 malware-linux` 
 
 * It's then easiest to run the executable by double clicking it in the file manager. Alternatively you can run it with **./malware-<OS>** but will have to open multiple tabs/windows to create multiple infected devices.
 * Once run, you should see another web page open in a new tab. This is the infected software web page. 
