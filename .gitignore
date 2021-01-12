@@ -107,4 +107,4 @@ dist
 .tern-port
 
 # malware executables
-./build/*
+/build/*
