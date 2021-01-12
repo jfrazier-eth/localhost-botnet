@@ -1,26 +1,41 @@
 {
-  "name": "433-final-project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/frazierjoe/433-final-project.git"
-  },
-  "author": "Joe Frazier",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/frazierjoe/433-final-project/issues"
-  },
-  "homepage": "https://github.com/frazierjoe/433-final-project#readme",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "express": "^4.17.1",
-    "get-port": "^5.1.1",
-    "open": "^7.3.0",
-    "socket.io": "^3.0.5"
-  }
+    "name": "localhost-botnet",
+    "version": "1.0.0",
+    "description": "A localhost implementation of a botnet used to perform a credential stuffing attack",
+    "main": "src/index.js",
+    "bin": "src/malware/index.js",
+    "pkg": {
+        "assets": [
+            "node_modules/**/*",
+            "src/malware/**/*"
+        ],
+        "targets": [
+            "node10-macos-x64",
+            "node10-win-x64",
+            "node10-linux-x64"
+        ]
+    },
+    "scripts": {
+        "start": "npm run pack-malware && npm run start-server",
+        "start-server": "node src/index.js",
+        "pack-malware": "pkg --out-path build/ ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/frazierjoe/localhost-botnet"
+    },
+    "author": "Joe Frazier",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/frazierjoe/localhost-botnet/issues"
+    },
+    "homepage": "https://github.com/frazierjoe/localhost-botnet#readme",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "express": "^4.17.1",
+        "get-port": "^5.1.1",
+        "open": "^7.3.0",
+        "pkg": "^4.4.9",
+        "socket.io": "^3.0.5"
+    }
 }
