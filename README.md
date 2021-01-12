@@ -1,5 +1,7 @@
-# Localhost Botnet
-A localhost botnet and a website that the botnet can be used to perform a credential stuffing attack on. A botnet is composed of some infected software that be used to spread the botnet and a command and control server that infected devices connect to and wait for commands.
+# Localhost Botnet   ![](https://img.shields.io/badge/Node.JS-informational?style=flat&logo=Node.js&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/Socket.io-informational?style=flat&logo=Socket.io&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/Express-informational?style=flat&logo=Express&logoColor=white&color=2bbc8a)
+
+## Goal
+This was created as a final project for WUSTL CSE-433 (Introduction to Computer Security) as a way to help understand how the basic components of a botnet work together to infect devices, control these devices and issue attacks.
 
 ## Scripts
 * `npm run start` everything you need to run the program
