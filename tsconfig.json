@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      "outDir": "./built",
+      "allowJs": true,
+      "noImplicitAny": true,
+      "target": "es5"
+    },
+    "include": ["./src/**/*", "malware"],
+    
+}

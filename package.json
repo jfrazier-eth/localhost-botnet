@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "A localhost implementation of a botnet used to perform a credential stuffing attack",
     "main": "src/index.js",
-    "bin": "src/malware/index.js",
+    "bin": "src/malware/server/index.js",
     "pkg": {
         "assets": [
             "node_modules/**/*",
@@ -36,6 +36,8 @@
         "get-port": "^5.1.1",
         "open": "^7.3.0",
         "pkg": "^4.4.9",
-        "socket.io": "^3.0.5"
+        "socket.io": "^3.0.5",
+        "source-map-loader": "^2.0.0",
+        "ts-loader": "^8.0.14"
     }
 }

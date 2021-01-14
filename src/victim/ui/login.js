@@ -12,7 +12,7 @@ const attemptLogin = () => {
     axios
         .post(
             "http://127.0.0.1:3002/authenticate",
-            JSON.stringify({ username: username, password: password }), {
+            JSON.stringify({ username, password }), {
                 headers: {
                     "Content-Type": "application/json",
                 },
